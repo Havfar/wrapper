@@ -1,0 +1,138 @@
+{
+  "name": "lisa-wrapper",
+  "displayName": "lisa-wrapper",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.67.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:lisa.helloWorld",
+    "onCommand:lisa.wrapInDiv",
+    "onCommand:lisa.wrapInSpan",
+    "onCommand:lisa.wrapInContainer",
+    "onCommand:lisa.wrapInFlexRow",
+    "onCommand:lisa.wrapInFlexColumn",
+    "onCommand:lisa.wrapInFragment",
+    "onCommand:lisa.removeWrapper"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "lisa.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "lisa.wrapInDiv",
+        "title": "Wrap with Div"
+      },
+      {
+        "command": "lisa.wrapInFragment",
+        "title": "Wrap with Fragment"
+      },
+      {
+        "command": "lisa.wrapInSpan",
+        "title": "Wrap with span"
+      },
+      {
+        "command": "lisa.wrapInContainer",
+        "title": "Wrap with Container"
+      },
+      {
+        "command": "lisa.wrapInFlexColumn",
+        "title": "Wrap with FlexColumn"
+      },
+      {
+        "command": "lisa.wrapInFlexRow",
+        "title": "Wrap with FlexRow"
+      },
+      {
+        "command": "lisa.removeWrapper",
+        "title": "Remove wrapper"
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "when": "editorLangId == typescriptreact",
+          "command": "lisa.wrapInFlexRow"
+        }
+      ],
+      "editor/title": [
+        {
+          "when": "editorLangId == typescriptreact",
+          "command": "lisa.wrapInContainer",
+          "group": "lisa"
+        }
+      ],
+      "explorer/context": [
+        {
+          "when": "editorLangId == typescriptreact",
+          "command": "lisa.wrapInContainer",
+          "group": "lisa"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "when": "editorLangId == typescriptreact",
+          "command": "lisa.wrapInDiv"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "lisa.wrapInFlexRow",
+          "when": "editorLangId == typescript || editorLangId == typescriptreact"
+        },
+        {
+          "command": "lisa.wrapInSpan",
+          "when": "editorLangId == typescript || editorLangId == typescriptreact"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "lisa.wrapInDiv",
+        "key": "alt+p",
+        "mac": "alt+p",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "lisa.wrapInSpan",
+        "key": "alt+s",
+        "mac": "alt+s",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.67.0",
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "14.x",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "eslint": "^8.14.0",
+    "glob": "^8.0.1",
+    "mocha": "^9.2.2",
+    "typescript": "^4.6.4",
+    "ts-loader": "^9.2.8",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "@vscode/test-electron": "^2.1.3"
+  }
+}
