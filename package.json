@@ -2,9 +2,9 @@
   "name": "wrapper",
   "displayName": "wrapper",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "havfar",
-  "icon": "./images.png",
+  "icon": "./images/icon.png",
   "engines": {
     "vscode": "^1.67.0"
   },
@@ -12,27 +12,39 @@
     "Other"
   ],
   "main": "./dist/extension.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Havfar/wrapper"
+  },
+  "activationEvents": [
+    "onCommand:wrapInDiv",
+    "onCommand:wrapInFragment",
+    "onCommand:wrapInSpan",
+    "onCommand:wrapInColumn",
+    "onCommand:wrapInRow",
+    "onCommand:removeWrapper"
+  ],
   "contributes": {
     "commands": [
       {
         "command": "wrapInDiv",
-        "title": "Wrap with Div"
+        "title": "Wrap with <div>"
       },
       {
         "command": "wrapInFragment",
-        "title": "Wrap with Fragment"
+        "title": "Wrap with <></>"
       },
       {
         "command": "wrapInSpan",
-        "title": "Wrap with span"
+        "title": "Wrap with <span>"
       },
       {
         "command": "wrapInColumn",
-        "title": "Wrap with Column"
+        "title": "Wrap with <Column>"
       },
       {
         "command": "wrapInRow",
-        "title": "Wrap with Row"
+        "title": "Wrap with <Row>"
       },
       {
         "command": "removeWrapper",
