@@ -18,4 +18,5 @@ export function removeWrapper() {
     new Position(htmlSection.start, 100),
     new Position(htmlSection.start, 100)
   );
+  vscode.commands.executeCommand("editor.action.formatDocument");
 }

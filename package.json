@@ -1,57 +1,41 @@
 {
-  "name": "lisa-wrapper",
-  "displayName": "lisa-wrapper",
+  "name": "wrapper",
+  "displayName": "wrapper",
   "description": "",
   "version": "0.0.1",
+  "publisher": "havfar",
+  "icon": "./images.png",
   "engines": {
     "vscode": "^1.67.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:lisa.helloWorld",
-    "onCommand:lisa.wrapInDiv",
-    "onCommand:lisa.wrapInSpan",
-    "onCommand:lisa.wrapInContainer",
-    "onCommand:lisa.wrapInFlexRow",
-    "onCommand:lisa.wrapInFlexColumn",
-    "onCommand:lisa.wrapInFragment",
-    "onCommand:lisa.removeWrapper"
-  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "lisa.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "lisa.wrapInDiv",
+        "command": "wrapInDiv",
         "title": "Wrap with Div"
       },
       {
-        "command": "lisa.wrapInFragment",
+        "command": "wrapInFragment",
         "title": "Wrap with Fragment"
       },
       {
-        "command": "lisa.wrapInSpan",
+        "command": "wrapInSpan",
         "title": "Wrap with span"
       },
       {
-        "command": "lisa.wrapInContainer",
-        "title": "Wrap with Container"
+        "command": "wrapInColumn",
+        "title": "Wrap with Column"
       },
       {
-        "command": "lisa.wrapInFlexColumn",
-        "title": "Wrap with FlexColumn"
+        "command": "wrapInRow",
+        "title": "Wrap with Row"
       },
       {
-        "command": "lisa.wrapInFlexRow",
-        "title": "Wrap with FlexRow"
-      },
-      {
-        "command": "lisa.removeWrapper",
+        "command": "removeWrapper",
         "title": "Remove wrapper"
       }
     ],
@@ -59,51 +43,63 @@
       "view/item/context": [
         {
           "when": "editorLangId == typescriptreact",
-          "command": "lisa.wrapInFlexRow"
+          "command": "wrapInFlexRow"
         }
       ],
       "editor/title": [
         {
           "when": "editorLangId == typescriptreact",
-          "command": "lisa.wrapInContainer",
-          "group": "lisa"
+          "command": "wrapInContainer",
+          "group": "wrapper"
         }
       ],
       "explorer/context": [
         {
           "when": "editorLangId == typescriptreact",
-          "command": "lisa.wrapInContainer",
-          "group": "lisa"
+          "command": "wrapInContainer",
+          "group": "wrapper"
         }
       ],
       "editor/title/context": [
         {
           "when": "editorLangId == typescriptreact",
-          "command": "lisa.wrapInDiv"
+          "command": "wrapInDiv"
         }
       ],
       "editor/context": [
         {
-          "command": "lisa.wrapInFlexRow",
+          "command": "wrapInFlexRow",
           "when": "editorLangId == typescript || editorLangId == typescriptreact"
         },
         {
-          "command": "lisa.wrapInSpan",
+          "command": "wrapInSpan",
           "when": "editorLangId == typescript || editorLangId == typescriptreact"
         }
       ]
     },
     "keybindings": [
       {
-        "command": "lisa.wrapInDiv",
-        "key": "alt+p",
-        "mac": "alt+p",
+        "command": "wrapInFragment",
+        "key": "alt+f",
+        "mac": "alt+f",
         "when": "editorTextFocus"
       },
       {
-        "command": "lisa.wrapInSpan",
+        "command": "wrapInDiv",
+        "key": "alt+d",
+        "mac": "alt+d",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "wrapInSpan",
         "key": "alt+s",
         "mac": "alt+s",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "removeWrapper",
+        "key": "alt+r",
+        "mac": "alt+r",
         "when": "editorTextFocus"
       }
     ]

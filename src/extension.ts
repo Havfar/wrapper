@@ -4,7 +4,7 @@ import { removeWrapper } from "./utils/removeWrapper";
 
 export function deactivate() {}
 
-export type Tag = "div" | "span" | "Container" | "FlexRow" | "FlexColumn" | "";
+export type Tag = "div" | "span" | "Container" | "Row" | "Column" | "";
 
 const wrapWithTag = (tag: Tag) => {
   insertSnippet(tag);
@@ -12,40 +12,26 @@ const wrapWithTag = (tag: Tag) => {
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.wrapInDiv", () => wrapWithTag("div"))
+    vscode.commands.registerCommand("wrapInDiv", () => wrapWithTag("div"))
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.wrapInContainer", () =>
-      wrapWithTag("Container")
-    )
+    vscode.commands.registerCommand("wrapInSpan", () => wrapWithTag("span"))
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.wrapInSpan", () =>
-      wrapWithTag("span")
-    )
+    vscode.commands.registerCommand("wrapInFragment", () => wrapWithTag(""))
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.wrapInFragment", () =>
-      wrapWithTag("")
-    )
+    vscode.commands.registerCommand("wrapInRow", () => wrapWithTag("Row"))
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.wrapInFlexRow", () =>
-      wrapWithTag("FlexRow")
-    )
+    vscode.commands.registerCommand("removeWrapper", () => removeWrapper())
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.removeWrapper", () => removeWrapper())
-  );
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand("lisa.wrapInFlexColumn", () =>
-      wrapWithTag("FlexColumn")
-    )
+    vscode.commands.registerCommand("wrapInColumn", () => wrapWithTag("Column"))
   );
 }

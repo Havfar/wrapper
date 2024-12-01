@@ -3,90 +3,111 @@ import { Position } from "vscode";
 import { HtmlLine } from "../models/HtmlLine";
 import { HtmlSection } from "../models/HtmlSection";
 
+/**
+ * Converts the selected text in the editor to an HtmlSection.
+ *
+ * @param editor - The VSCode TextEditor instance containing the selection.
+ * @returns An HtmlSection object representing the selected HTML content.
+ *
+ * The function processes the selected text in the editor and converts it into an HtmlSection object.
+ * It starts by determining the starting line of the selection and checks if the line contains a self-closing tag or a closing chevron.
+ * If it does, it creates an HtmlLine for that line and adds it to the htmlLines array.
+ * Otherwise, it finds the end chevron of the tag and creates an HtmlLine for the start and end lines.
+ *
+ * The function then iterates through the lines, adding them to the htmlLines array until it finds the closing tag of the initial HTML tag.
+ */
 export const toHtmlSection = (editor: vscode.TextEditor): HtmlSection => {
-  var listOfHtmlLines = new Array<HtmlLine>();
-  let startPosition = new Position(0, 0);
+  const htmlLines: HtmlLine[] = [];
+  const startLineNumber = editor.selection.start.line;
+  const startPosition = new Position(startLineNumber, 0);
+  const startLine = editor.document.lineAt(startLineNumber);
 
-  let startLine = editor.selection.start.line;
-  startPosition = new Position(startLine, 0);
-
-  let counter = 1;
-  let tagCounter = 0;
-  const start = editor.document.lineAt(startLine);
-
-  if (start.text.includes("/>") || start.text.includes(">")) {
-    var firstLine = HtmlLine.createHtmlLine(startLine, start);
-    listOfHtmlLines.push(firstLine);
+  if (startLine.text.includes("/>") || startLine.text.includes(">")) {
+    htmlLines.push(HtmlLine.createHtmlLine(startLineNumber, startLine));
   } else {
-    const { line, text } = findEndChevronRecursive(startPosition, editor);
-    const htmlLine = HtmlLine.createHtmlLineStartEnd(
-      startPosition.line,
-      line.lineNumber + 1,
-      text
+    const { line: endLine, text } = findEndChevron(startPosition, editor);
+    htmlLines.push(
+      HtmlLine.createHtmlLineStartEnd(
+        startPosition.line,
+        endLine.lineNumber + 1,
+        text
+      )
     );
-
-    listOfHtmlLines.push(htmlLine);
-    return new HtmlSection(listOfHtmlLines);
+    return new HtmlSection(htmlLines);
   }
 
-  while (!listOfHtmlLines[0].isClosingTag()) {
-    var lineNo = startLine + counter;
-    var line = editor.document.lineAt(startLine + counter);
-    var htmlLine = HtmlLine.createHtmlLine(lineNo, line);
-    listOfHtmlLines.push(htmlLine);
-    counter++;
+  let lineOffset = 1;
+  let nestedTagCount = 0;
 
-    if (htmlLine.htmlTag?.type === listOfHtmlLines[0].htmlTag?.type) {
+  while (!htmlLines[0].isClosingTag()) {
+    const currentLineNumber = startLineNumber + lineOffset;
+    const currentLine = editor.document.lineAt(currentLineNumber);
+    const htmlLine = HtmlLine.createHtmlLine(currentLineNumber, currentLine);
+    htmlLines.push(htmlLine);
+    lineOffset++;
+
+    if (htmlLine.htmlTag?.type === htmlLines[0].htmlTag?.type) {
       if (htmlLine.isClosingTag()) {
-        if (tagCounter === 0) {
+        if (nestedTagCount === 0) {
           break;
         }
-        tagCounter--;
+        nestedTagCount--;
       } else {
-        tagCounter++;
+        nestedTagCount++;
       }
     }
   }
 
-  return new HtmlSection(listOfHtmlLines);
+  return new HtmlSection(htmlLines);
 };
 
-const findEndChevronRecursive = (
+/**
+ * Finds the end chevron (">") in the text starting from a given position in the editor.
+ * It concatenates lines until it finds a ">" that is not part of an arrow function (=>).
+ *
+ * @param startPosition - The starting position to begin the search.
+ * @param editor - The text editor instance where the search is performed.
+ * @returns An object containing the line where the end chevron is found and the combined text up to that point.
+ */
+const findEndChevron = (
   startPosition: Position,
   editor: vscode.TextEditor
 ): { line: vscode.TextLine; text: string } => {
-  var line = editor.document.lineAt(startPosition.line);
-  var text = line.text;
-  if (text.includes(">") && !text.includes("=>")) {
-    return { line, text };
-  } else {
-    const result = findEndChevronRecursive(
-      new Position(startPosition.line + 1, 0),
-      editor
-    );
-    text += result.text;
-    line = result.line;
-    return { line, text };
+  let currentLine = editor.document.lineAt(startPosition.line);
+  let combinedText = currentLine.text;
+  while (!combinedText.includes(">") || combinedText.includes("=>")) {
+    startPosition = new Position(startPosition.line + 1, 0);
+    currentLine = editor.document.lineAt(startPosition.line);
+    combinedText += currentLine.text;
   }
+  return { line: currentLine, text: combinedText };
 };
 
+/**
+ * Converts the currently selected lines in the active text editor to an HtmlSection.
+ *
+ * @returns {HtmlSection} The HtmlSection created from the selected lines.
+ * @throws {Error} If no active editor is found.
+ */
 export function toHtmlSectionFromSelection(): HtmlSection {
   const editor = vscode.window.activeTextEditor;
-  var listOfHtmlLines = new Array<HtmlLine>();
-
-  if (editor) {
-    const startLine = editor.selection.start.line;
-    const numberOfLines =
-      editor.selection.end.line - editor.selection.start.line;
-    for (let counter = 0; counter <= numberOfLines; counter++) {
-      var lineNo = startLine + counter;
-      var line = editor.document.lineAt(lineNo);
-      var htmlLine = HtmlLine.createHtmlLine(lineNo, line);
-      listOfHtmlLines.push(htmlLine);
-    }
+  if (!editor) {
+    throw new Error("No active editor found");
   }
 
-  var section = new HtmlSection(listOfHtmlLines);
+  const htmlLines: HtmlLine[] = [];
+  const startLineNumber = editor.selection.start.line;
+  const endLineNumber = editor.selection.end.line;
 
-  return section;
+  for (
+    let lineNumber = startLineNumber;
+    lineNumber <= endLineNumber;
+    lineNumber++
+  ) {
+    const line = editor.document.lineAt(lineNumber);
+    const htmlLine = HtmlLine.createHtmlLine(lineNumber, line);
+    htmlLines.push(htmlLine);
+  }
+
+  return new HtmlSection(htmlLines);
 }

@@ -1,70 +1,39 @@
-# lisa-wrapper README
+# Wrapper Extension
 
-This is the README for your extension "lisa-wrapper". After writing up a brief description, we recommend including the following sections.
+The Wrapper extension for Visual Studio Code provides commands to wrap selected text in various HTML elements such as `div`, `span`, `container`, `row`, `column`, and `fragment`. It also includes a command to remove wrappers.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Wrap selected text with `div`, `span`, `Row`, `column`, or `fragment`.
+- Remove wrappers from selected text.
+- Keybindings for quick access to wrapping commands.
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
+### Convert with cursor
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![Wrapper Extension Usage](./videos/cursor.gif)
+Open a TypeScript React file in Visual Studio Code.
+Select the text you want to wrap.
+Use the command palette (Ctrl+Shift+P or Cmd+Shift+P on macOS) to search for the wrapping commands:
 
-## Requirements
+- Wrap with div
+- Wrap with span
+- Wrap with Row
+- Wrap with Column
+- Wrap with Fragment
+- Remove wrapper
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Highlight selection
 
-## Extension Settings
+You can also select the text you want to wrap by highlighting it with your mouse or keyboard. Once selected, use the command palette or the keybindings to wrap the selected text with the desired HTML element.
+![Wrapper Extension Usage](./videos/selection.gif)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Shortcuts
 
-For example:
+Alternatively, use the keybindings:
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Alt+D (or Option+D on macOS) to wrap with div
+- Alt+S (or Option+S on macOS) to wrap with span
+- Alt+F (or Option+F on macOS) to wrap with fragment
+- Alt+R (or Option+R on macOS) to remove wrapper
