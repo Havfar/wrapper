@@ -34,4 +34,45 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("wrapInColumn", () => wrapWithTag("Column"))
   );
+
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider(
+      { scheme: "file", language: "typescriptreact" },
+      new WrapperCodeActionProvider(),
+      {
+        providedCodeActionKinds:
+          WrapperCodeActionProvider.providedCodeActionKinds,
+      }
+    )
+  );
+}
+
+class WrapperCodeActionProvider implements vscode.CodeActionProvider {
+  static readonly providedCodeActionKinds = [vscode.CodeActionKind.QuickFix];
+
+  provideCodeActions(
+    document: vscode.TextDocument,
+    range: vscode.Range | vscode.Selection,
+    context: vscode.CodeActionContext,
+    token: vscode.CancellationToken
+  ): vscode.CodeAction[] {
+    const wrapInDivAction = this.createCommandCodeAction(
+      "Wrap with <div>",
+      "wrapInDiv"
+    );
+    const removeWrapperAction = this.createCommandCodeAction(
+      "Remove wrapper",
+      "removeWrapper"
+    );
+    return [wrapInDivAction, removeWrapperAction];
+  }
+
+  private createCommandCodeAction(
+    title: string,
+    command: string
+  ): vscode.CodeAction {
+    const action = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
+    action.command = { command, title };
+    return action;
+  }
 }
